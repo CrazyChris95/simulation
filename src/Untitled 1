@@ -1,0 +1,132 @@
+	private void departB() {
+		QB--;
+		if(QB > 0) {
+			insertEvent(DEPARTURE_B, time + 0.004);
+		}
+		else if (QA > 0) {
+			insertEvent(DEPARTURE_A, time + 0.002);
+		}	
+	}
+	Math.log(1-slump.nextDouble())/(-150.0)
+	
+	
+		if(actEvent.eventType == 3 || actEvent.eventType == 4) {
+    		System.out.println("Eventtype");
+    		System.out.println(actEvent.eventType);
+    		System.out.println("Event diff time");
+    		System.out.println(actEvent.eventTime-oldTime);
+    		oldTime = actEvent.eventTime;
+    		}
+    		
+  //////////////////////
+  package Assignment4;
+
+
+import java.util.*;
+import java.io.*;
+
+class State extends GlobalSimulation{
+	
+	// Here follows the state variables and other variables that might be needed
+	// e.g. for measurements
+	public int  noMeasurements = 0, noArrivals=0, noDepartures=0, accTotal=0;
+	public int cust_inSystem;
+	protected int noServers, mean, lambda, measureTIME, numberTomeasure;
+	protected Random slump ;
+	protected Server[] servers;
+	private SimpleFileWriter file1;
+	
+	
+	
+	
+	
+	
+	public State(int noServers, SimpleFileWriter file1) {
+		this.noServers=noServers;
+		this.file1 = file1;
+		servers = new Server[noServers];
+		
+		for (int i =0; i <noServers ; i++) {
+			servers[i]= new Server(i);
+			System.out.println(servers[i].index);
+			
+		}	
+		
+	}
+	
+	
+	// The following method is called by the main program each time a new event has been fetched
+	// from the event list in the main loop. 
+	public void treatEvent(Event x){
+		switch (x.eventType){
+			case ARRIVAL:
+				arrival();
+				break;
+			case DEPARTURE:
+				System.out.println("AA");
+				depart(x.server);
+				break;
+			case MEASURE:
+				measure();
+				break;
+		}
+	}
+	
+	
+	
+	
+	// The following methods defines what should be done when an event takes place. This could
+	// have been placed in the case in treatEvent, but often it is simpler to write a method if 
+	// things are getting more complicated than this.
+	
+	private void arrival(){
+		for (Server server : servers) {
+			if(server.isAvailable()) {
+				server.arrive();
+				int a = server.index;
+				servers[0].depart();
+				insertEvent(ARRIVAL, time + Math.log(1-slump.nextDouble())/(-1/100), 20);
+				break;
+			}
+		}
+		insertEvent(ARRIVAL, time + Math.log(1-slump.nextDouble())/(-8), 0);
+	}
+	
+	private void depart(int e){
+		System.out.println("aa");
+		servers[e].depart();
+	}
+	
+
+	
+	private void measure(){
+		noMeasurements++;
+		file1.writeln(Integer.toString(cust_inSystem));
+		insertEvent(MEASURE, time + 1, 0);
+	}
+	
+	
+	private class Server{ 
+		 private boolean available=true;
+		 public int index ;
+		 
+		 Server(int index) {
+			 this.index =index;
+		 }
+		 
+	
+		 public void arrive() {
+			 cust_inSystem++;
+			 available=false;
+		 }
+		 
+		 public void depart() {
+			 cust_inSystem++;
+			 available =true;
+		 }
+		 
+		 public boolean isAvailable() {
+			 return available;
+		 }	 
+	}
+}
