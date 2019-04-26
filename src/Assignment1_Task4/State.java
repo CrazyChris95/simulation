@@ -50,11 +50,11 @@ class State extends GlobalSimulation{
 		for (Server server : servers) {
 			if(server.isAvailable()) {
 				server.arrive();
-				insertEvent(DEPARTURE_1, time + Math.log(1-slump.nextDouble())/(-1/100.0), server.index);
+				insertEvent(DEPARTURE_1, time + 10, server.index);
 				break;
 			}
 		}
-		insertEvent(ARRIVAL_1, time + Math.log(1-slump.nextDouble())/(-10), 0);
+		insertEvent(ARRIVAL_1, time + Math.log(1-slump.nextDouble())/(-4), 0);
 	}
 	
 	private void departFrom1(int e){

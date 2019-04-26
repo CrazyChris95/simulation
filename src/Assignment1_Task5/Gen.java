@@ -24,7 +24,7 @@ class Gen extends Proc{
 	public void TreatSignal(Signal x){
 		switch (x.signalType){
 			case DEPART:{
-				;
+				unirandom(4);
 				SignalList.SendSignal(DEPART, this, time + 4*slump.nextDouble());}
 				break;
 		}

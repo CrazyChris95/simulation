@@ -32,7 +32,6 @@ public class MainSimulation extends GlobalSimulation{
         	days++;
         	time = 0;
         	accTime +=(actState.accTime/actState.noDepartures);
-        	System.out.println(actState.accTime/actState.noDepartures);
         	accCust+=(double)actState.accQ1/actState.noMeasurements;
         	accFinishtime += actState.finishtime;
         	eventList.reset();
